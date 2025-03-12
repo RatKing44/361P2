@@ -1,33 +1,76 @@
 package fa.nfa;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
-
 import fa.State;
 
 public class NFA implements NFAInterface {
 
+    // instance variables
+    Set<NFAState> states;
+    Set<Character> language;
+    Set<NFAState> finalStates;
+    NFAState startState;
+
+    public NFA() {
+        this.states = new LinkedHashSet<>();
+        this.language = new LinkedHashSet<>();
+        this.finalStates = new LinkedHashSet<>();
+        this.startState = null;
+    }
+
     @Override
     public boolean addState(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addState'");
+        boolean foundState = false;
+        // looks to see if the state name already exists in the set
+        for (NFAState s : states) {
+            if (s.getName().equals(name)) {
+                foundState = true;
+            }
+        }
+        // adds a new state with the name to the set
+        if (foundState == false) {
+            states.add(new NFAState(name));
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     @Override
     public boolean setFinal(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setFinal'");
+        boolean addedFinal = false;
+        for (NFAState s : states) {
+            // checks to see if the given name exists as a state, and if it does, adds it to
+            // the final state set
+            if (s.getName().equals(name)) {
+                finalStates.add(s);
+                addedFinal = true;
+            }
+        }
+        return addedFinal;
     }
 
     @Override
     public boolean setStart(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setStart'");
+        boolean setStart = false;
+        for (NFAState s : states) {
+            // checks to see if the name given exists and sets that state to the start
+            if (s.getName().equals(name)) {
+                startState = s;
+                setStart = true;
+            }
+        }
+        return setStart;
     }
 
     @Override
     public void addSigma(char symbol) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addSigma'");
+        // adds a character to the set if it doesn't already exist
+        if (!language.contains(symbol)) {
+            language.add(symbol);
+        }
     }
 
     @Override
@@ -38,26 +81,36 @@ public class NFA implements NFAInterface {
 
     @Override
     public Set<Character> getSigma() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSigma'");
+        return language;
     }
 
     @Override
     public State getState(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getState'");
+        State returnState = null;
+        // loop for checking the state name against the parameter
+        for (NFAState s : states) {
+            if (s.getName().equals(name)) {
+                returnState = s;
+            }
+        }
+        return returnState;
     }
 
     @Override
     public boolean isFinal(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isFinal'");
+        boolean isFinal = false;
+        // loop for checking if the state exists in the final state set
+        for (NFAState s : finalStates) {
+            if (s.getName().equals(name)) {
+                isFinal = true;
+            }
+        }
+        return isFinal;
     }
 
     @Override
     public boolean isStart(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isStart'");
+        return startState.getName().equals(name);
     }
 
     @Override
