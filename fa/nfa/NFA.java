@@ -127,16 +127,25 @@ public class NFA implements NFAInterface {
     @Override
     public Set<NFAState> eClosure(NFAState s) {
         
-        Set<NFAState> closure = null;
         // loop for checking the state name against the parameter
-        
-        if (s.getTransition('e') != null){
-            for (NFAState state : s.getTransition('e')){
-                closure.add(state);
-                eClosure(state);
+        Stack <NFAState> stack = new Stack<>();
+        Set<NFAState> closure = new LinkedHashSet<>();
+        NFAState tempstate = null;
+        stack.push(s);
+        closure.add(s);
+        while (!stack.isEmpty()){
+            tempstate = stack.pop();
+            Set<NFAState> epstrans = tempstate.getTransitions('e');
+            if (epstrans != null){
+                for (NFAState state : epstrans){
+                    if (!closure.contains(state)){
+                        closure.add(state);
+                        stack.push(state);
+                    }
+                }
             }
         }
-    
+        
         return closure;
         
     }
