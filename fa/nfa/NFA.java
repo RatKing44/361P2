@@ -114,12 +114,6 @@ public class NFA implements NFAInterface {
         return startState.getName().equals(name);
     }
 
-<<<<<<< HEAD
-    @Override(
-    public Set<NFAState> getToState(NFAState from, char onSymb)) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getToState'");
-=======
     @Override
     public Set<NFAState> getToState(NFAState from, char onSymb) {
         Set<NFAState> toStates = new LinkedHashSet<>();
@@ -128,7 +122,6 @@ public class NFA implements NFAInterface {
             toStates.addAll(transition);
         }
        return toStates;
->>>>>>> 74ac0cf730e98e5fdeb4023032c15ddf11a71b83
     }
 
     @Override
