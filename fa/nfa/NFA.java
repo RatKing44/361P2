@@ -114,16 +114,27 @@ public class NFA implements NFAInterface {
         return startState.getName().equals(name);
     }
 
-    @Override
-    public Set<NFAState> getToState(NFAState from, char onSymb) {
+    @Override(
+    public Set<NFAState> getToState(NFAState from, char onSymb)) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getToState'");
     }
 
     @Override
     public Set<NFAState> eClosure(NFAState s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eClosure'");
+        
+        Set<NFAState> closure = null;
+        // loop for checking the state name against the parameter
+        
+        if (s.getTransition('e') != null){
+            for (NFAState state : s.getTransition('e')){
+                closure.add(state);
+                eClosure(state);
+            }
+        }
+    
+        return closure;
+        
     }
 
     @Override
