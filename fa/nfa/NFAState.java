@@ -1,13 +1,15 @@
 package fa.nfa;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import fa.State;
 
 public class NFAState extends State {
 
     // keep track of transitions for each state and where they go to
-    protected HashMap<Character, String> transitions;
+    protected HashMap<Character, Set<NFAState>> transitions;
 
     public NFAState(String name) {
         super(name);
@@ -20,9 +22,13 @@ public class NFAState extends State {
      * @param key       the character in which the transition takes place on
      * @param stateName the state that the transition is going to
      */
-    public void addTransition(Character key, String stateName) {
-        transitions.put(key, stateName);
+    public void addTransition(Character key, NFAState stateName) {
+        if (!transitions.containsKey(key)) {
+            transitions.put(key, new HashSet<>());
+        }
+        transitions.get(key).add(stateName);
     }
+    
 
     /**
      * Gets the transition for this state that uses the specified key
@@ -30,8 +36,8 @@ public class NFAState extends State {
      * @param key the character in which we want the transition for
      * @return this returns the name of the toState transition in string form
      */
-    public String getTransition(Character key) {
-        return transitions.get(key);
-
+    public Set<NFAState> getTransitions(Character key) {
+       
+      return transitions.get(key);
     }
 }
