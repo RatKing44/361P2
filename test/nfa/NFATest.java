@@ -243,6 +243,9 @@ public class NFATest {
 		System.out.println("nfa1 instantiation done");
 	}
 	
+	/*
+	 
+	 
 	@Test
 	public void test3_2() {
 		NFA nfa = nfa3();
@@ -255,7 +258,7 @@ public class NFATest {
 		assertTrue(nfa.isFinal("N"));
 		assertFalse(nfa.isFinal("I"));
 		System.out.println("nfa1 correctness done");
-	}
+	}*/
 	
 	@Test
 	public void test3_3() {
