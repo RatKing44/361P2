@@ -36,14 +36,8 @@ public class NFAState extends State {
      * @param key the character in which we want the transition for
      * @return this returns the name of the toState transition in string form
      */
-    public String getTransition(Character key) {
+    public Set<NFAState> getTransitions(Character key) {
        
-      Set<NFAState> retVal =  transitions.get(key);
-      String retString = "";
-       for(NFAState state : retVal){
-              retString += state.getName() + ",";
-        
-        }
-        return retString;
+      return transitions.get(key);
     }
 }
