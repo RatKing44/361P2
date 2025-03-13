@@ -181,8 +181,19 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean isDFA() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isDFA'");
+        boolean isDFA = true;
+        for(NFAState n: states){
+            if(n.getTransitions('e') != null){
+                isDFA = false;
+            }
+            for(Character l: language){
+                if(n.getTransitions(l).size > 1){
+                    isDFA = false;
+                }
+            }
+        }
+        return isDFA;
+        
     }
 
 }
