@@ -67,8 +67,9 @@ public class NFA implements NFAInterface {
 
     @Override
     public void addSigma(char symbol) {
-        // adds a character to the set if it doesn't already exist
-        if (!language.contains(symbol)) {
+        // adds a character to the set if it doesn't already exist and it isnt the
+        // reserved 'e'
+        if (!language.contains(symbol) && symbol != 'e') {
             language.add(symbol);
         }
     }
