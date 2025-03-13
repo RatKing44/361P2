@@ -158,8 +158,25 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean addTransition(String fromState, Set<String> toStates, char onSymb) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addTransition'");
+        boolean addTransition = true;
+        if(!language.contains(onSymb)){
+            addTransition = false;
+        }
+        else if(getState(fromState) == null){
+            addTransition = false;
+        }
+        for(String state : toStates){
+            if(getState(state) == null){
+                addTransition = false;
+            }
+        }
+        if(addTransition){
+            for(String s : toStates){
+                fromState.addTransition(onSymb, getState(s));
+            }
+        }
+        return addTransition;
+
     }
 
     @Override
