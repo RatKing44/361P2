@@ -120,36 +120,36 @@ public class NFA implements NFAInterface {
     public Set<NFAState> getToState(NFAState from, char onSymb) {
         Set<NFAState> toStates = new LinkedHashSet<>();
         Set<NFAState> transition = from.getTransitions(onSymb);
-        if(transition != null){
+        if (transition != null) {
             toStates.addAll(transition);
         }
-       return toStates;
+        return toStates;
     }
 
     @Override
     public Set<NFAState> eClosure(NFAState s) {
-        
+
         // loop for checking the state name against the parameter
-        Stack <NFAState> stack = new Stack<>();
+        Stack<NFAState> stack = new Stack<>();
         Set<NFAState> closure = new LinkedHashSet<>();
         NFAState tempstate = null;
         stack.push(s);
         closure.add(s);
-        while (!stack.isEmpty()){
+        while (!stack.isEmpty()) {
             tempstate = stack.pop();
             Set<NFAState> epstrans = tempstate.getTransitions('e');
-            if (epstrans != null){
-                for (NFAState state : epstrans){
-                    if (!closure.contains(state)){
+            if (epstrans != null) {
+                for (NFAState state : epstrans) {
+                    if (!closure.contains(state)) {
                         closure.add(state);
                         stack.push(state);
                     }
                 }
             }
         }
-        
+
         return closure;
-        
+
     }
 
     @Override
@@ -161,19 +161,18 @@ public class NFA implements NFAInterface {
     @Override
     public boolean addTransition(String fromState, Set<String> toStates, char onSymb) {
         boolean addTransition = true;
-        if(!language.contains(onSymb)){
+        if (!language.contains(onSymb) && onSymb != 'e') {
+            addTransition = false;
+        } else if (getState(fromState) == null) {
             addTransition = false;
         }
-        else if(getState(fromState) == null){
-            addTransition = false;
-        }
-        for(String state : toStates){
-            if(getState(state) == null){
+        for (String state : toStates) {
+            if (getState(state) == null) {
                 addTransition = false;
             }
         }
-        if(addTransition){
-            for(String s : toStates){
+        if (addTransition) {
+            for (String s : toStates) {
                 ((NFAState) getState(fromState)).addTransition(onSymb, (NFAState) getState(s));
             }
         }
@@ -184,18 +183,20 @@ public class NFA implements NFAInterface {
     @Override
     public boolean isDFA() {
         boolean isDFA = true;
-        for(NFAState n: states){
-            if(n.getTransitions('e') != null){
+        for (NFAState n : states) {
+            if (n.getTransitions('e') != null) {
                 isDFA = false;
             }
-            for(Character l: language){
-                if(n.getTransitions(l).size() > 1){
+            for (Character l : language) {
+                if (n.getTransitions(l) == null) {
+                    isDFA = false;
+                } else if (n.getTransitions(l).size() > 1) {
                     isDFA = false;
                 }
             }
         }
         return isDFA;
-        
+
     }
 
 }
