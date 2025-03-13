@@ -88,8 +88,8 @@ public class NFA implements NFAInterface {
     }
 
     @Override
-    public State getState(String name) {
-        State returnState = null;
+    public NFAState getState(String name) {
+        NFAState returnState = null;
         // loop for checking the state name against the parameter
         for (NFAState s : states) {
             if (s.getName().equals(name)) {
@@ -154,6 +154,7 @@ public class NFA implements NFAInterface {
 
     @Override
     public int maxCopies(String s) {
+        
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'maxCopies'");
     }
