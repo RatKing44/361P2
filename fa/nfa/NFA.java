@@ -2,6 +2,8 @@ package fa.nfa;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.Stack;
+
 import fa.State;
 
 public class NFA implements NFAInterface {
@@ -172,7 +174,7 @@ public class NFA implements NFAInterface {
         }
         if(addTransition){
             for(String s : toStates){
-                fromState.addTransition(onSymb, getState(s));
+                ((NFAState) getState(fromState)).addTransition(onSymb, (NFAState) getState(s));
             }
         }
         return addTransition;
@@ -187,7 +189,7 @@ public class NFA implements NFAInterface {
                 isDFA = false;
             }
             for(Character l: language){
-                if(n.getTransitions(l).size > 1){
+                if(n.getTransitions(l).size() > 1){
                     isDFA = false;
                 }
             }
