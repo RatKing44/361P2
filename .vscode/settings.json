@@ -1,6 +1,7 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\Users\\archi\\Downloads\\junit-platform-console-standalone-1.9.2.jar"
+        "c:\\Users\\archi\\Downloads\\junit-platform-console-standalone-1.9.2.jar",
+        "c:\\Users\\adamm\\Downloads\\junit-platform-console-standalone-1.9.2.jar"
     ]
 }
