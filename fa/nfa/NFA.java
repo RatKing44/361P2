@@ -172,40 +172,26 @@ public class NFA implements NFAInterface {
         if (s.isEmpty()) {
             return 0;
         }
-        int max = 0;
-        char first = s.charAt(0);
-        String left = s.substring(1);
-
-        for (NFAState state : states) {
-            Stack<NFAState> stack = new Stack<>();
-            Stack<Integer> copyStack = new Stack<>();
-            stack.push(state);
-            copyStack.push(1);
-            int copies = 0;
-            while (!stack.isEmpty()) {
-                NFAState temp = stack.pop();
-                copies = copyStack.pop();
-                Set<NFAState> nextStates = temp.getTransitions(first);
-                if (nextStates != null && nextStates.contains(temp)) {
-                    nextStates.remove(temp);
-                }
-                if (nextStates != null) {
-                    for (NFAState nextState : nextStates) {
-                        stack.push(nextState);
-                        copyStack.push(copies + 1);
-                    }
-                }
-                if (left.isEmpty()) {
-                    max = Math.max(max, copies);
-                } else {
-                    first = left.charAt(0);
-                    left = left.substring(1);
-                }
+    
+        int maxCopies = 1;
+        Set<NFAState> currentStates = eClosure(startState);
+        for (char symbol : s.toCharArray()) {
+            Set<NFAState> nextStates = new LinkedHashSet<>();
+            for (NFAState state : currentStates) {
+                nextStates.addAll(getToState(state, symbol));
             }
-
+            currentStates = new LinkedHashSet<>();
+            for (NFAState state : nextStates) {
+                currentStates.addAll(eClosure(state));
+            }
+            maxCopies = Math.max(maxCopies, currentStates.size());
         }
-        return max;
+    
+        return maxCopies;
     }
+
+    
+
 
     @Override
     public boolean addTransition(String fromState, Set<String> toStates, char onSymb) {
