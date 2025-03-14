@@ -169,25 +169,69 @@ public class NFA implements NFAInterface {
 
     @Override
     public int maxCopies(String s) {
-        if (s.isEmpty()) {
+        if(this.startState == null) {
             return 0;
         }
-    
-        int maxCopies = 1;
+        char[] symbols = s.toCharArray();
+        int pos = 0;
         Set<NFAState> currentStates = eClosure(startState);
-        for (char symbol : s.toCharArray()) {
+        int max = currentStates.size();
+
+        while(pos != symbols.length){
+            if(!language.contains(symbols[pos])){
+                return max;
+            }
+
             Set<NFAState> nextStates = new LinkedHashSet<>();
-            for (NFAState state : currentStates) {
-                nextStates.addAll(getToState(state, symbol));
+            Set<NFAState> eclosures = new LinkedHashSet<>();
+
+            for(NFAState state : currentStates){
+                Set<NFAState> temp = state.getTransitions(symbols[pos]);
+                if(temp != null){
+                    nextStates.addAll(temp);
+                }
             }
-            currentStates = new LinkedHashSet<>();
-            for (NFAState state : nextStates) {
-                currentStates.addAll(eClosure(state));
+
+            for(NFAState state : nextStates){
+                eclosures.addAll(eClosure(state));
             }
-            maxCopies = Math.max(maxCopies, currentStates.size());
+            nextStates.addAll(eclosures);
+
+
+            if(nextStates.isEmpty()){
+                return max;
+            }
+
+            if(nextStates.size() > max){
+                max = nextStates.size();
+            }
+
+            currentStates = nextStates;
+            pos++;
         }
+
+        return max;
+        // if (s.isEmpty()) {
+        //     return 0;
+        // }
     
-        return maxCopies;
+        // int maxCopies = 1;
+        // Set<NFAState> currentStates = eClosure(startState);
+        // for (char symbol : s.toCharArray()) {
+        //     Set<NFAState> nextStates = new LinkedHashSet<>();
+        //     for (NFAState state : currentStates) {
+        //         nextStates.addAll(getToState(state, symbol));
+        //     }
+        //     currentStates = new LinkedHashSet<>();
+        //     for (NFAState state : nextStates) {
+        //         currentStates.addAll(eClosure(state));
+        //     }
+        //    if(currentStates.size() > maxCopies) {
+        //        maxCopies = currentStates.size();
+        //    }
+        // }
+    
+        // return maxCopies;
     }
 
     
