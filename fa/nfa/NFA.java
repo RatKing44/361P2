@@ -78,8 +78,23 @@ public class NFA implements NFAInterface {
 
     @Override
     public boolean accepts(String s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'accepts'");
+        Set<NFAState> currentStates = eClosure(startState);
+        for (char symbol : s.toCharArray()) {
+            Set<NFAState> nextStates = new LinkedHashSet<>();
+            for (NFAState state : currentStates) {
+                nextStates.addAll(getToState(state, symbol));
+            }
+            currentStates = new LinkedHashSet<>();
+            for (NFAState state : nextStates) {
+                currentStates.addAll(eClosure(state));
+            }
+        }
+        for (NFAState state : currentStates) {
+            if (isFinal(state.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -154,9 +169,42 @@ public class NFA implements NFAInterface {
 
     @Override
     public int maxCopies(String s) {
-        
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'maxCopies'");
+        if (s.isEmpty()) {
+            return 0;
+        }
+        int max = 0;
+        char first = s.charAt(0);
+        String left = s.substring(1);
+
+        for (NFAState state : states) {
+            Stack<NFAState> stack = new Stack<>();
+            Stack<Integer> copyStack = new Stack<>();
+            stack.push(state);
+            copyStack.push(0);
+            while (!stack.isEmpty()) {
+                NFAState temp = stack.pop();
+                int copies = copyStack.pop();
+                Set<NFAState> nextStates = temp.getTransitions(first);
+                if (nextStates != null) {
+                    for (NFAState nextState : nextStates) {
+                        stack.push(nextState);
+                        copyStack.push(copies + 1);
+                    }
+                }
+                if (left.isEmpty()) {
+                    max = Math.max(max, copies);
+                } else {
+                    for (NFAState nextState : temp.getTransitions(first)) {
+                        stack.push(nextState);
+                        copyStack.push(copies);
+                        first = left.charAt(0);
+                        left = left.substring(1);
+                    }
+                }
+            }
+
+        }
+        return max;
     }
 
     @Override
