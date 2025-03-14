@@ -180,11 +180,15 @@ public class NFA implements NFAInterface {
             Stack<NFAState> stack = new Stack<>();
             Stack<Integer> copyStack = new Stack<>();
             stack.push(state);
-            copyStack.push(0);
+            copyStack.push(1);
+            int copies = 0;
             while (!stack.isEmpty()) {
                 NFAState temp = stack.pop();
-                int copies = copyStack.pop();
+                copies = copyStack.pop();
                 Set<NFAState> nextStates = temp.getTransitions(first);
+                if (nextStates != null && nextStates.contains(temp)) {
+                    nextStates.remove(temp);
+                }
                 if (nextStates != null) {
                     for (NFAState nextState : nextStates) {
                         stack.push(nextState);
@@ -194,12 +198,8 @@ public class NFA implements NFAInterface {
                 if (left.isEmpty()) {
                     max = Math.max(max, copies);
                 } else {
-                    for (NFAState nextState : temp.getTransitions(first)) {
-                        stack.push(nextState);
-                        copyStack.push(copies);
-                        first = left.charAt(0);
-                        left = left.substring(1);
-                    }
+                    first = left.charAt(0);
+                    left = left.substring(1);
                 }
             }
 
