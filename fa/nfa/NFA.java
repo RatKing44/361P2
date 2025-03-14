@@ -172,11 +172,13 @@ public class NFA implements NFAInterface {
         if(this.startState == null) {
             return 0;
         }
+        //gets the input as an array of characters
         char[] symbols = s.toCharArray();
         int pos = 0;
         Set<NFAState> currentStates = eClosure(startState);
         int max = currentStates.size();
 
+        //loops through the input string
         while(pos != symbols.length){
             if(!language.contains(symbols[pos])){
                 return max;
@@ -184,7 +186,7 @@ public class NFA implements NFAInterface {
 
             Set<NFAState> nextStates = new LinkedHashSet<>();
             Set<NFAState> eclosures = new LinkedHashSet<>();
-
+            //loops through the current states and gets the transitions for the current symbol
             for(NFAState state : currentStates){
                 Set<NFAState> temp = state.getTransitions(symbols[pos]);
                 if(temp != null){
@@ -192,20 +194,24 @@ public class NFA implements NFAInterface {
                 }
             }
 
+            //loops through the next states and gets the epsilon closures
             for(NFAState state : nextStates){
                 eclosures.addAll(eClosure(state));
             }
+            //adds the epsilon closures to the next states
             nextStates.addAll(eclosures);
 
-
+            //if the next states are empty, return the max
             if(nextStates.isEmpty()){
                 return max;
             }
 
+            //if the next states are greater than the max, set the max to the next states size
             if(nextStates.size() > max){
                 max = nextStates.size();
             }
 
+            //sets the current states to the next states and increments the position
             currentStates = nextStates;
             pos++;
         }
