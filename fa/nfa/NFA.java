@@ -211,27 +211,6 @@ public class NFA implements NFAInterface {
         }
 
         return max;
-        // if (s.isEmpty()) {
-        //     return 0;
-        // }
-    
-        // int maxCopies = 1;
-        // Set<NFAState> currentStates = eClosure(startState);
-        // for (char symbol : s.toCharArray()) {
-        //     Set<NFAState> nextStates = new LinkedHashSet<>();
-        //     for (NFAState state : currentStates) {
-        //         nextStates.addAll(getToState(state, symbol));
-        //     }
-        //     currentStates = new LinkedHashSet<>();
-        //     for (NFAState state : nextStates) {
-        //         currentStates.addAll(eClosure(state));
-        //     }
-        //    if(currentStates.size() > maxCopies) {
-        //        maxCopies = currentStates.size();
-        //    }
-        // }
-    
-        // return maxCopies;
     }
 
     
