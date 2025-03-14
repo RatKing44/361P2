@@ -79,6 +79,7 @@ public class NFA implements NFAInterface {
     @Override
     public boolean accepts(String s) {
         Set<NFAState> currentStates = eClosure(startState);
+        //Travel through each state to see if the string is accepted
         for (char symbol : s.toCharArray()) {
             Set<NFAState> nextStates = new LinkedHashSet<>();
             for (NFAState state : currentStates) {
@@ -89,6 +90,7 @@ public class NFA implements NFAInterface {
                 currentStates.addAll(eClosure(state));
             }
         }
+        //Checks if the current state is a final state
         for (NFAState state : currentStates) {
             if (isFinal(state.getName())) {
                 return true;
@@ -225,6 +227,7 @@ public class NFA implements NFAInterface {
     @Override
     public boolean addTransition(String fromState, Set<String> toStates, char onSymb) {
         boolean addTransition = true;
+        //Checks if the symbol is in the language and is not the reserved 'e'
         if (!language.contains(onSymb) && onSymb != 'e') {
             addTransition = false;
         } else if (getState(fromState) == null) {
@@ -247,10 +250,12 @@ public class NFA implements NFAInterface {
     @Override
     public boolean isDFA() {
         boolean isDFA = true;
+        //Checks if any of the states have an epsilon transition 
         for (NFAState n : states) {
             if (n.getTransitions('e') != null) {
                 isDFA = false;
             }
+            //Checks if any of the states have more than one transtition on the same symbol
             for (Character l : language) {
                 if (n.getTransitions(l) == null) {
                     isDFA = false;

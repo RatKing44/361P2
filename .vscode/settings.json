@@ -3,6 +3,7 @@
         "lib/**/*.jar",
         "c:\\Users\\archi\\Downloads\\junit-platform-console-standalone-1.9.2.jar",
         "c:\\Users\\adamm\\Downloads\\junit-platform-console-standalone-1.9.2.jar",
-        "/home/ADAMTAYLOR483/cs321/p2/project-2-RatKing44/lib/junit-4.13.2.jar"
+        "/home/ADAMTAYLOR483/cs321/p2/project-2-RatKing44/lib/junit-4.13.2.jar",
+        "/home/ADAMTAYLOR483/Downloads/hamcrest-core-1.3-javadoc.jar"
     ]
 }
